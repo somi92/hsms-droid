@@ -2,6 +2,7 @@ package com.github.somi92.hsmsdroid.activities;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,22 +16,32 @@ import com.github.somi92.hsmsdroid.util.HSMSListAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements HSMSListTask.HSMSListEventListener {
 
     private ProgressDialog mProgressDialog;
     private ListView mHSMSListView;
+    private SwipeRefreshLayout mSwipeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        HSMSListTask hlt = new HSMSListTask(this);
-        hlt.execute();
+        mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadList();
+            }
+        });
+        mSwipeLayout.setColorSchemeResources(android.R.color.holo_red_light,
+                android.R.color.holo_blue_light,
+                android.R.color.black);
+
+
+        loadList();
+
     }
 
     @Override
@@ -58,11 +69,13 @@ public class MainActivity extends AppCompatActivity implements HSMSListTask.HSMS
 
     @Override
     public void onHSMSListTaskStarted() {
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.setCancelable(true);
-        mProgressDialog.setMessage("Molimo sačekajte...");
-        mProgressDialog.show();
+        if(mSwipeLayout != null && !mSwipeLayout.isRefreshing()) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setCanceledOnTouchOutside(false);
+            mProgressDialog.setCancelable(true);
+            mProgressDialog.setMessage("Molimo sačekajte...");
+            mProgressDialog.show();
+        }
     }
 
     @Override
@@ -78,23 +91,25 @@ public class MainActivity extends AppCompatActivity implements HSMSListTask.HSMS
         if(mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
+        if(mSwipeLayout != null && mSwipeLayout.isRefreshing()) {
+            mSwipeLayout.setRefreshing(false);
+        }
         Toast.makeText(this, "Broj preuzetih humanitarnih akcija: "+entitiesList.size(), Toast.LENGTH_SHORT).show();
-    }
-
-    private List<Map<String, HSMSEntity>> getEntitiesList(HSMSEntity[] entities) {
-        if(entities.length < 1) {
-            return null;
-        }
-        List<Map<String, HSMSEntity>> entitiesList = new ArrayList<>();
-        for(HSMSEntity entity : entities) {
-            HashMap<String, String> map = new HashMap<>();
-
-        }
-        return entitiesList;
     }
 
     @Override
     public void onHSMSEventNotification(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        if(mSwipeLayout != null && mSwipeLayout.isRefreshing()) {
+            mSwipeLayout.setRefreshing(false);
+        }
+        if(mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+    private void loadList() {
+        HSMSListTask hlt = new HSMSListTask(this);
+        hlt.execute();
     }
 }
