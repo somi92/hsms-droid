@@ -42,7 +42,7 @@
     <!-- Organization box -->
 
     <TextView
-        android:id="@+id/organization"
+        android:id="@+id/organisation"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/description"
@@ -60,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/organization"
+        android:layout_alignTop="@id/organisation"
         android:layout_marginRight="5dip"
         android:gravity="right"
         android:text="100 din"
@@ -74,7 +74,7 @@
         android:id="@+id/website"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/organization"
+        android:layout_below="@id/organisation"
         android:layout_toRightOf="@+id/thumbnail"
         android:gravity="left"
         android:text="http://www.vlada.gov.rs"

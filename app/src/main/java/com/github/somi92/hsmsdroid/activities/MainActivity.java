@@ -5,15 +5,24 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.github.somi92.hsmsdroid.R;
 import com.github.somi92.hsmsdroid.domain.HSMSEntity;
 import com.github.somi92.hsmsdroid.tasks.HSMSListTask;
+import com.github.somi92.hsmsdroid.util.HSMSListAdapter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements HSMSListTask.HSMSListEventListener {
 
     private ProgressDialog mProgressDialog;
+    private ListView mHSMSListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +67,30 @@ public class MainActivity extends AppCompatActivity implements HSMSListTask.HSMS
 
     @Override
     public void onHSMSListReceived(HSMSEntity[] entities) {
+        if(entities == null || entities.length<1) {
+            Toast.makeText(this, "Nije pronađena nije humanitarna akcija.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mHSMSListView = (ListView) findViewById(R.id.hsmsListView);
+        ArrayList<HSMSEntity> entitiesList = new ArrayList<>(Arrays.asList(entities));
+        HSMSListAdapter adapter = new HSMSListAdapter(this, entitiesList);
+        mHSMSListView.setAdapter(adapter);
         if(mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
-        Toast.makeText(this, "Entities received!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Broj preuzetih humanitarnih akcija: "+entitiesList.size(), Toast.LENGTH_SHORT).show();
+    }
+
+    private List<Map<String, HSMSEntity>> getEntitiesList(HSMSEntity[] entities) {
+        if(entities.length < 1) {
+            return null;
+        }
+        List<Map<String, HSMSEntity>> entitiesList = new ArrayList<>();
+        for(HSMSEntity entity : entities) {
+            HashMap<String, String> map = new HashMap<>();
+
+        }
+        return entitiesList;
     }
 
     @Override
