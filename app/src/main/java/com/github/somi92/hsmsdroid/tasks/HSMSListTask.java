@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.github.somi92.hsmsdroid.domain.HSMSEntity;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -25,8 +26,7 @@ public class HSMSListTask extends AsyncTask<URL, Integer, Boolean> {
 
     private ProgressDialog mProgressDialog;
     private Activity mParentActivity;
-    private JSONObject mJsonObj;
-    private HSMSEntity mHsmsEntity;
+    private String result;
 
     public HSMSListTask(Activity parentActivity) {
         mParentActivity = parentActivity;
@@ -52,26 +52,21 @@ public class HSMSListTask extends AsyncTask<URL, Integer, Boolean> {
             connection.setReadTimeout(10000);
             int statusCode = connection.getResponseCode();
             if(statusCode != HttpURLConnection.HTTP_OK) {
-                // Toast.makeText(mParentActivity, "HTTP greška, status kod: "+statusCode, Toast.LENGTH_SHORT).show();
+                result = "HTTP greška, status kod: " + statusCode;
                 return false;
             }
             InputStream inStream = new BufferedInputStream(connection.getInputStream());
-            mJsonObj = new JSONObject(getResponseText(inStream));
+            result = getResponseText(inStream);
 
-
-            // Toast.makeText(mParentActivity, jsonObj.toString(), Toast.LENGTH_LONG).show();
-
+        } catch (SocketTimeoutException e) {
+            result = "Greška! Konekcija je istekla: "+e.getMessage();
+            return false;
+        } catch (IOException e) {
+            result = "Greška! I/O sistem ne može preuzeti podatke: "+e.getMessage();
+            return false;
         }
-//        catch (SocketTimeoutException e) {
-//            // Toast.makeText(mParentActivity, "Greška! Konekcija je istekla: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-//            return false;
-//        } catch (IOException e) {
-//            // Toast.makeText(mParentActivity, "Greška! I/O sistem ne može preuzeti podatke: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
         catch (Exception e) {
-            // Toast.makeText(mParentActivity, "Greška! Sistem ne može preuzeti podatke: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-            Log.e(this.getClass().getSimpleName(), "Error: "+e.getMessage());
+            result = "Greška! Sistem ne može preuzeti podatke: "+e.getMessage();
             return false;
         } finally {
             if(connection != null) {
@@ -84,13 +79,20 @@ public class HSMSListTask extends AsyncTask<URL, Integer, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean isSuccessful) {
-        if(mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
-        if(isSuccessful) {
-            Toast.makeText(mParentActivity, mJsonObj.toString(), Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(mParentActivity, "Greška! Sistem ne može preuzeti podatke!", Toast.LENGTH_SHORT).show();
+        try {
+            if(mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            }
+            if(isSuccessful) {
+                Toast.makeText(mParentActivity, result, Toast.LENGTH_SHORT).show();
+                JSONObject obj = new JSONObject(result);
+            } else {
+                Toast.makeText(mParentActivity, result, Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            Toast.makeText(mParentActivity, "Greška! JSON parsiranje neuspešno.", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(mParentActivity, "Greška! Prikaz podataka neuspešan.", Toast.LENGTH_SHORT).show();
         }
     }
 
