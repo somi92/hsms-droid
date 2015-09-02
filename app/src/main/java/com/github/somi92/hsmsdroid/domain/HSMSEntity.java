@@ -1,18 +1,29 @@
 package com.github.somi92.hsmsdroid.domain;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by milos on 9/1/15.
  */
 public class HSMSEntity {
 
+    @SerializedName("id")
     private String id;
+    @SerializedName("desc")
     private String desc;
+    @SerializedName("number")
     private String number;
+    @SerializedName("price")
     private String price;
+    @SerializedName("status")
     private String status;
+    @SerializedName("organisation")
     private String organisation;
+    @SerializedName("web")
     private String web;
+    @SerializedName("priority")
     private String priority;
+    @SerializedName("remark")
     private String remark;
 
     public HSMSEntity() {

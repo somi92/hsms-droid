@@ -1,13 +1,11 @@
 package com.github.somi92.hsmsdroid.tasks;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.github.somi92.hsmsdroid.domain.HSMSEntity;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,21 +22,17 @@ import java.util.Scanner;
  */
 public class HSMSListTask extends AsyncTask<URL, Integer, Boolean> {
 
-    private ProgressDialog mProgressDialog;
-    private Activity mParentActivity;
-    private String result;
 
-    public HSMSListTask(Activity parentActivity) {
-        mParentActivity = parentActivity;
-        mProgressDialog = new ProgressDialog(mParentActivity);
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.setCancelable(false);
+    private HSMSListEventListener mHSMSListener;
+    private String mResult;
+
+    public HSMSListTask(HSMSListEventListener hsmsListener) {
+        mHSMSListener = hsmsListener;
     }
 
     @Override
     protected void onPreExecute() {
-        mProgressDialog.setMessage("Molimo sačekajte...");
-        mProgressDialog.show();
+        mHSMSListener.onHSMSListTaskStarted();
     }
 
     @Override
@@ -52,21 +46,21 @@ public class HSMSListTask extends AsyncTask<URL, Integer, Boolean> {
             connection.setReadTimeout(10000);
             int statusCode = connection.getResponseCode();
             if(statusCode != HttpURLConnection.HTTP_OK) {
-                result = "HTTP greška, status kod: " + statusCode;
+                mResult = "HTTP greška, status kod: " + statusCode;
                 return false;
             }
             InputStream inStream = new BufferedInputStream(connection.getInputStream());
-            result = getResponseText(inStream);
+            mResult = getResponseText(inStream);
 
         } catch (SocketTimeoutException e) {
-            result = "Greška! Konekcija je istekla: "+e.getMessage();
+            mResult = "Greška! Konekcija je istekla: "+e.getMessage();
             return false;
         } catch (IOException e) {
-            result = "Greška! I/O sistem ne može preuzeti podatke: "+e.getMessage();
+            mResult = "Greška! I/O sistem ne može preuzeti podatke: "+e.getMessage();
             return false;
         }
         catch (Exception e) {
-            result = "Greška! Sistem ne može preuzeti podatke: "+e.getMessage();
+            mResult = "Greška! Sistem ne može preuzeti podatke: "+e.getMessage();
             return false;
         } finally {
             if(connection != null) {
@@ -80,20 +74,26 @@ public class HSMSListTask extends AsyncTask<URL, Integer, Boolean> {
     @Override
     protected void onPostExecute(Boolean isSuccessful) {
         try {
-            if(mProgressDialog.isShowing()) {
-                mProgressDialog.dismiss();
-            }
             if(isSuccessful) {
-                Toast.makeText(mParentActivity, result, Toast.LENGTH_SHORT).show();
-                JSONObject obj = new JSONObject(result);
+                HSMSEntity[] entities = getHsmsEntities();
+                mHSMSListener.onHSMSListReceived(entities);
             } else {
-                Toast.makeText(mParentActivity, result, Toast.LENGTH_SHORT).show();
+                mHSMSListener.onHSMSEventNotification(mResult);
             }
-        } catch (JSONException e) {
-            Toast.makeText(mParentActivity, "Greška! JSON parsiranje neuspešno.", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            Toast.makeText(mParentActivity, "Greška! Prikaz podataka neuspešan.", Toast.LENGTH_SHORT).show();
         }
+        catch (JSONException e) {
+            mHSMSListener.onHSMSEventNotification("Greška! JSON parsiranje neuspešno.");
+        } catch (Exception e) {
+            mHSMSListener.onHSMSEventNotification("Greška! Prikaz podataka neuspešan.");
+        }
+    }
+
+    private HSMSEntity[] getHsmsEntities() throws JSONException {
+        JSONObject obj = new JSONObject(mResult);
+        JSONArray array = obj.getJSONArray("actions");
+        Gson gson = new Gson();
+        HSMSEntity[] entities = gson.fromJson(array.toString(), HSMSEntity[].class);
+        return entities;
     }
 
     private static String getResponseText(InputStream in) {
@@ -103,5 +103,10 @@ public class HSMSListTask extends AsyncTask<URL, Integer, Boolean> {
         return s;
     }
 
+    public interface HSMSListEventListener {
+        void onHSMSListTaskStarted();
+        void onHSMSListReceived(HSMSEntity[] entities);
+        void onHSMSEventNotification(String message);
+    }
 
 }
