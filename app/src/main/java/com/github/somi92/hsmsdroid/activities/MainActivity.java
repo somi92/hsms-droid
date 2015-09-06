@@ -35,10 +35,9 @@ public class MainActivity extends AppCompatActivity implements HSMSListTask.HSMS
                 loadList();
             }
         });
-        mSwipeLayout.setColorSchemeResources(android.R.color.holo_red_light,
-                android.R.color.holo_blue_light,
+        mSwipeLayout.setColorSchemeResources(android.R.color.holo_red_dark,
+                android.R.color.holo_blue_dark,
                 android.R.color.black);
-
 
         loadList();
 

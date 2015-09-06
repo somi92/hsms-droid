@@ -2,5 +2,8 @@
     <string name="app_name">Humanitarni SMS</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Podešavanja</string>
+    <string name="search_dialog_button">Pretraga</string>
+    <string name="help_button">Pomoć</string>
+    <string name="stats_button">Statistika</string>
 </resources>
