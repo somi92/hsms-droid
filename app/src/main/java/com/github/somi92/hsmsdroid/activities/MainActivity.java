@@ -1,9 +1,12 @@
 package com.github.somi92.hsmsdroid.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -12,21 +15,28 @@ import android.widget.Toast;
 import com.github.somi92.hsmsdroid.R;
 import com.github.somi92.hsmsdroid.domain.HSMSEntity;
 import com.github.somi92.hsmsdroid.tasks.HSMSListTask;
+import com.github.somi92.hsmsdroid.util.HSMSConstants;
 import com.github.somi92.hsmsdroid.util.HSMSListAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements HSMSListTask.HSMSListEventListener {
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.PREF_FILE;
+
+public class MainActivity extends Activity implements HSMSListTask.HSMSListEventListener {
 
     private ProgressDialog mProgressDialog;
     private ListView mHSMSListView;
     private SwipeRefreshLayout mSwipeLayout;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        PreferenceManager.setDefaultValues(this, PREF_FILE, MODE_PRIVATE, R.xml.preferences, false);
+        prefs = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
 
         mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -60,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements HSMSListTask.HSMS
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
@@ -108,7 +119,8 @@ public class MainActivity extends AppCompatActivity implements HSMSListTask.HSMS
     }
 
     private void loadList() {
+        String serviceAddress = prefs.getString(HSMSConstants.SERVICE_IP_PREF, "192.168.1.2");
         HSMSListTask hlt = new HSMSListTask(this);
-        hlt.execute();
+        hlt.execute(serviceAddress);
     }
 }

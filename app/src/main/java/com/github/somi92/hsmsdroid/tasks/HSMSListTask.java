@@ -20,7 +20,7 @@ import java.util.Scanner;
 /**
  * Created by milos on 9/1/15.
  */
-public class HSMSListTask extends AsyncTask<URL, Integer, Boolean> {
+public class HSMSListTask extends AsyncTask<String, Integer, Boolean> {
 
 
     private HSMSListEventListener mHSMSListener;
@@ -36,12 +36,12 @@ public class HSMSListTask extends AsyncTask<URL, Integer, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(URL... url) {
-        String string = "http://192.168.1.181/HSMS-MS/public/service/listhsms";
+    protected Boolean doInBackground(String... url) {
+        String service = "http://"+url[0]+"/HSMS-MS/public/service/listhsms";
         HttpURLConnection connection = null;
 
         try {
-            connection = (HttpURLConnection) (new URL(string).openConnection());
+            connection = (HttpURLConnection) (new URL(service).openConnection());
             connection.setConnectTimeout(10000);
             connection.setReadTimeout(10000);
             int statusCode = connection.getResponseCode();

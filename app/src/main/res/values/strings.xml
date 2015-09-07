@@ -6,4 +6,14 @@
     <string name="search_dialog_button">Pretraga</string>
     <string name="help_button">Pomoć</string>
     <string name="stats_button">Statistika</string>
+
+    <string name="settings_activity_label">Podešavanja</string>
+
+    <string name="service_settings_screen_key">service_screen_pref</string>
+    <string name="service_settings_screen_title">Podešavanje servisa</string>
+    <string name="service_ip_key">service_ip_pref</string>
+    <string name="service_ip_title">Adresa servisa</string>
+    <string name="service_ip_default">192.168.1.2</string>
+
+
 </resources>
