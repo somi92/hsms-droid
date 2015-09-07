@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Humanitarni SMS</string>
 
+    <string name="search_hint">Pretraga humanitarnih akcija</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Podešavanja</string>
     <string name="search_dialog_button">Pretraga</string>
@@ -14,6 +16,7 @@
     <string name="service_ip_key">service_ip_pref</string>
     <string name="service_ip_title">Adresa servisa</string>
     <string name="service_ip_default">192.168.1.2</string>
+    <string name="title_activity_search">SearchActivity</string>
 
 
 </resources>

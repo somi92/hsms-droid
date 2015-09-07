@@ -4,26 +4,26 @@
 
     <item android:id="@+id/search_dialog_button"
         android:title="@string/search_dialog_button"
-        android:icon="@drawable/ic_search_white_48dp" />
-
-        <!--app:showAsAction="always"-->
+        android:icon="@drawable/ic_search_white_48dp"
+        app:showAsAction="collapseActionView|ifRoom"
+        android:actionViewClass="android.widget.SearchView" />
 
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
-        android:icon="@drawable/ic_settings_white_48dp" />
+        android:icon="@drawable/ic_settings_white_48dp"
 
-        <!--app:showAsAction="always" -->
+        app:showAsAction="ifRoom" />
 
     <item android:id="@+id/stats_button"
         android:title="@string/stats_button"
-        android:icon="@drawable/ic_insert_chart_white_48dp" />
+        android:icon="@drawable/ic_insert_chart_white_48dp"
 
-        <!--app:showAsAction="ifRoom"-->
+        app:showAsAction="ifRoom" />
 
     <item android:id="@+id/help_button"
         android:title="@string/help_button"
-        android:icon="@drawable/ic_help_outline_white_48dp" />
+        android:icon="@drawable/ic_help_outline_white_48dp"
 
-        <!--app:showAsAction="ifRoom"-->
+        app:showAsAction="ifRoom" />
 
 </menu>

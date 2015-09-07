@@ -2,6 +2,8 @@ package com.github.somi92.hsmsdroid.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.github.somi92.hsmsdroid.R;
@@ -28,7 +31,7 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
     private ProgressDialog mProgressDialog;
     private ListView mHSMSListView;
     private SwipeRefreshLayout mSwipeLayout;
-    private SharedPreferences prefs;
+    private SharedPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,7 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
         setContentView(R.layout.activity_main);
 
         PreferenceManager.setDefaultValues(this, PREF_FILE, MODE_PRIVATE, R.xml.preferences, false);
-        prefs = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
+        mPrefs = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
 
         mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -58,6 +61,10 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search_dialog_button).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
         return true;
     }
 
@@ -72,6 +79,9 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
+        }
+        if (id == R.id.search_dialog_button) {
+            onSearchRequested();
         }
 
         return super.onOptionsItemSelected(item);
@@ -119,7 +129,7 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
     }
 
     private void loadList() {
-        String serviceAddress = prefs.getString(HSMSConstants.SERVICE_IP_PREF, "192.168.1.2");
+        String serviceAddress = mPrefs.getString(HSMSConstants.SERVICE_IP_PREF, "192.168.1.2");
         HSMSListTask hlt = new HSMSListTask(this);
         hlt.execute(serviceAddress);
     }
