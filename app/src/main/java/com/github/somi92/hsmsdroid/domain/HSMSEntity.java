@@ -101,4 +101,18 @@ public class HSMSEntity {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+    public HSMSEntity cloneEntity() {
+        HSMSEntity clone = new HSMSEntity();
+        clone.setId(this.getId());
+        clone.setDesc(this.getDesc());
+        clone.setNumber(this.getNumber());
+        clone.setOrganisation(this.getOrganisation());
+        clone.setPrice(this.getPrice());
+        clone.setWeb(this.getWeb());
+        clone.setStatus(this.getStatus());
+        clone.setPriority(this.getPriority());
+        clone.setRemark(this.getRemark());
+        return clone;
+    }
 }

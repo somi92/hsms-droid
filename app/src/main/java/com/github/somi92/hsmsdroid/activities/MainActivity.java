@@ -23,6 +23,8 @@ import com.github.somi92.hsmsdroid.util.HSMSListAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.PREF_FILE;
 
@@ -32,6 +34,7 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
     private ListView mHSMSListView;
     private SwipeRefreshLayout mSwipeLayout;
     private SharedPreferences mPrefs;
+    private HSMSEntity[] mEntities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,14 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
 
         loadList();
 
+        handleSearchIntent(getIntent());
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleSearchIntent(intent);
     }
 
     @Override
@@ -104,10 +115,10 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
             Toast.makeText(this, "Nije pronađena nije humanitarna akcija.", Toast.LENGTH_SHORT).show();
             return;
         }
+        mEntities = entities;
         mHSMSListView = (ListView) findViewById(R.id.hsmsListView);
         ArrayList<HSMSEntity> entitiesList = new ArrayList<>(Arrays.asList(entities));
-        HSMSListAdapter adapter = new HSMSListAdapter(this, entitiesList);
-        mHSMSListView.setAdapter(adapter);
+        setEntitiesList(entitiesList);
         if(mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
@@ -115,6 +126,11 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
             mSwipeLayout.setRefreshing(false);
         }
         Toast.makeText(this, "Broj preuzetih humanitarnih akcija: "+entitiesList.size(), Toast.LENGTH_SHORT).show();
+    }
+
+    private void setEntitiesList(ArrayList<HSMSEntity> entitiesList) {
+        HSMSListAdapter adapter = new HSMSListAdapter(this, entitiesList);
+        mHSMSListView.setAdapter(adapter);
     }
 
     @Override
@@ -132,5 +148,48 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
         String serviceAddress = mPrefs.getString(HSMSConstants.SERVICE_IP_PREF, "192.168.1.2");
         HSMSListTask hlt = new HSMSListTask(this);
         hlt.execute(serviceAddress);
+    }
+
+    private void handleSearchIntent(Intent intent) {
+        if(!Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            return;
+        }
+        String searchQuery = intent.getStringExtra(SearchManager.QUERY);
+
+        ArrayList<HSMSEntity> searchEntitiesList = getMatchingEntitiesCopy(searchQuery);
+
+        for(HSMSEntity entity : searchEntitiesList) {
+            String regex = "(?i)" + searchQuery;
+            entity.setDesc(entity.getDesc().replaceAll(regex, highlight(regex, entity.getDesc())));
+            entity.setOrganisation(entity.getOrganisation().replaceAll(regex, highlight(regex, entity.getOrganisation())));
+            entity.setWeb(entity.getWeb().replaceAll(regex, highlight(regex, entity.getWeb())));
+            entity.setNumber(entity.getNumber().replaceAll(regex, highlight(regex, entity.getNumber())));
+        }
+        Toast.makeText(this, "Broj pronađenih humanitarnih akcija: "+searchEntitiesList.size(), Toast.LENGTH_SHORT).show();
+        setEntitiesList(searchEntitiesList);
+    }
+
+    private ArrayList<HSMSEntity> getMatchingEntitiesCopy(String searchQuery) {
+        ArrayList<HSMSEntity> searchEntitiesList = new ArrayList<>();
+        for(int i=0; i<mEntities.length; i++) {
+            if(mEntities[i].getDesc().toUpperCase().contains(searchQuery.toUpperCase()) ||
+                    mEntities[i].getOrganisation().toUpperCase().contains(searchQuery.toUpperCase()) ||
+                    mEntities[i].getNumber().toUpperCase().contains(searchQuery.toUpperCase()) ||
+                    mEntities[i].getWeb().toUpperCase().contains(searchQuery.toUpperCase())) {
+
+                searchEntitiesList.add(mEntities[i].cloneEntity());
+            }
+        }
+        return searchEntitiesList;
+    }
+
+    private String highlight(String regex, String text) {
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(text);
+        String result = "";
+        while(matcher.find()) {
+            result = matcher.group();
+        }
+        return "<font color='#E6E600'>"+result+"</font>";
     }
 }

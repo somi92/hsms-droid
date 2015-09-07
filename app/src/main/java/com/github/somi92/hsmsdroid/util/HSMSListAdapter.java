@@ -1,6 +1,7 @@
 package com.github.somi92.hsmsdroid.util;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,11 +39,11 @@ public class HSMSListAdapter extends ArrayAdapter<HSMSEntity> {
         TextView priceBox = (TextView) convertView.findViewById(R.id.price);
         TextView websiteBox = (TextView) convertView.findViewById(R.id.website);
 
-        numBox.setText(entity.getNumber());
-        description.setText(entity.getDesc());
-        organisation.setText(entity.getOrganisation());
+        numBox.setText(Html.fromHtml(entity.getNumber()));
+        description.setText(Html.fromHtml(entity.getDesc()));
+        organisation.setText(Html.fromHtml(entity.getOrganisation()));
         priceBox.setText(entity.getPrice());
-        websiteBox.setText(entity.getWeb());
+        websiteBox.setText(Html.fromHtml(entity.getWeb()));
 
         return convertView;
     }
