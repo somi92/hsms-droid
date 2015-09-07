@@ -11,6 +11,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -34,7 +36,8 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
     private ListView mHSMSListView;
     private SwipeRefreshLayout mSwipeLayout;
     private SharedPreferences mPrefs;
-    private HSMSEntity[] mEntities;
+    private HSMSEntity[] mSourceEntities;
+    private ArrayList<HSMSEntity> mCurrentEntities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +59,7 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
                 android.R.color.black);
 
         loadList();
-
         handleSearchIntent(getIntent());
-
     }
 
     @Override
@@ -115,7 +116,8 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
             Toast.makeText(this, "Nije pronađena nije humanitarna akcija.", Toast.LENGTH_SHORT).show();
             return;
         }
-        mEntities = entities;
+        mSourceEntities = entities;
+        mCurrentEntities = new ArrayList<>(Arrays.asList(mSourceEntities));
         mHSMSListView = (ListView) findViewById(R.id.hsmsListView);
         ArrayList<HSMSEntity> entitiesList = new ArrayList<>(Arrays.asList(entities));
         setEntitiesList(entitiesList);
@@ -126,6 +128,13 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
             mSwipeLayout.setRefreshing(false);
         }
         Toast.makeText(this, "Broj preuzetih humanitarnih akcija: "+entitiesList.size(), Toast.LENGTH_SHORT).show();
+
+        mHSMSListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(MainActivity.this, "Broj: "+mCurrentEntities.get(i).getNumber(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setEntitiesList(ArrayList<HSMSEntity> entitiesList) {
@@ -156,28 +165,28 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
         }
         String searchQuery = intent.getStringExtra(SearchManager.QUERY);
 
-        ArrayList<HSMSEntity> searchEntitiesList = getMatchingEntitiesCopy(searchQuery);
+        mCurrentEntities = getMatchingEntitiesCopy(searchQuery);
 
-        for(HSMSEntity entity : searchEntitiesList) {
+        for(HSMSEntity entity : mCurrentEntities) {
             String regex = "(?i)" + searchQuery;
             entity.setDesc(entity.getDesc().replaceAll(regex, highlight(regex, entity.getDesc())));
             entity.setOrganisation(entity.getOrganisation().replaceAll(regex, highlight(regex, entity.getOrganisation())));
             entity.setWeb(entity.getWeb().replaceAll(regex, highlight(regex, entity.getWeb())));
             entity.setNumber(entity.getNumber().replaceAll(regex, highlight(regex, entity.getNumber())));
         }
-        Toast.makeText(this, "Broj pronađenih humanitarnih akcija: "+searchEntitiesList.size(), Toast.LENGTH_SHORT).show();
-        setEntitiesList(searchEntitiesList);
+        Toast.makeText(this, "Broj pronađenih humanitarnih akcija: "+ mCurrentEntities.size(), Toast.LENGTH_SHORT).show();
+        setEntitiesList(mCurrentEntities);
     }
 
     private ArrayList<HSMSEntity> getMatchingEntitiesCopy(String searchQuery) {
         ArrayList<HSMSEntity> searchEntitiesList = new ArrayList<>();
-        for(int i=0; i<mEntities.length; i++) {
-            if(mEntities[i].getDesc().toUpperCase().contains(searchQuery.toUpperCase()) ||
-                    mEntities[i].getOrganisation().toUpperCase().contains(searchQuery.toUpperCase()) ||
-                    mEntities[i].getNumber().toUpperCase().contains(searchQuery.toUpperCase()) ||
-                    mEntities[i].getWeb().toUpperCase().contains(searchQuery.toUpperCase())) {
+        for(int i=0; i< mSourceEntities.length; i++) {
+            if(mSourceEntities[i].getDesc().toUpperCase().contains(searchQuery.toUpperCase()) ||
+                    mSourceEntities[i].getOrganisation().toUpperCase().contains(searchQuery.toUpperCase()) ||
+                    mSourceEntities[i].getNumber().toUpperCase().contains(searchQuery.toUpperCase()) ||
+                    mSourceEntities[i].getWeb().toUpperCase().contains(searchQuery.toUpperCase())) {
 
-                searchEntitiesList.add(mEntities[i].cloneEntity());
+                searchEntitiesList.add(mSourceEntities[i].cloneEntity());
             }
         }
         return searchEntitiesList;
