@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.somi92.hsmsdroid.R;
 import com.github.somi92.hsmsdroid.domain.HSMSEntity;
@@ -26,6 +27,8 @@ public class DonateActivity extends Activity {
     private Button mShare;
 
     private HSMSEntity mEntity;
+
+    private String mShareMessageTemplate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,24 @@ public class DonateActivity extends Activity {
             @Override
             public void onClick(View view) {
 
+            }
+        });
+
+        mShare = (Button) findViewById(R.id.share_button);
+        mShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mShareMessageTemplate = getResources().getString(R.string.share_message_template);
+                String message = mShareMessageTemplate.replaceAll("!number!", mEntity.getNumber())
+                        .replaceAll("!price!", mEntity.getPrice())
+                        .replace("!desc!", mEntity.getDesc())
+                        .replaceAll("!web!", mEntity.getWeb());
+//                Toast.makeText(DonateActivity.this, message, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_TEXT, message);
+                intent.setType("text/plain");
+                startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_chooser_title)));
             }
         });
 

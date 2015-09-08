@@ -20,5 +20,12 @@
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_donate">DonateActivity</string>
 
+    <string name="share_message_template">
+        Pošalji SMS poruku na !number! i doniraj !price! u sklopu akcije: !desc!. Više informacija na !web!. Poslato pomoću aplikacije
+        "Humanitarni SMS" (https://github.com/somi92/hsms-droid).
+    </string>
+    <string name="share_chooser_title">
+        Podeli putem aplikacije...
+    </string>
 
 </resources>
