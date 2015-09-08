@@ -93,7 +93,11 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
             return true;
         }
         if (id == R.id.search_dialog_button) {
-            onSearchRequested();
+            if(mSourceEntities == null || mSourceEntities.length == 0){
+                Toast.makeText(this, "Nema preuzetih humanitarnih akcija.", Toast.LENGTH_SHORT).show();
+            } else {
+                onSearchRequested();
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -113,7 +117,7 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
     @Override
     public void onHSMSListReceived(HSMSEntity[] entities) {
         if(entities == null || entities.length<1) {
-            Toast.makeText(this, "Nije pronađena nije humanitarna akcija.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Nije pronađena nijedna humanitarna akcija.", Toast.LENGTH_SHORT).show();
             return;
         }
         mSourceEntities = entities;
@@ -160,7 +164,8 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
     }
 
     private void handleSearchIntent(Intent intent) {
-        if(!Intent.ACTION_SEARCH.equals(intent.getAction())) {
+        if(!Intent.ACTION_SEARCH.equals(intent.getAction()) ||
+                mSourceEntities == null) {
             return;
         }
         String searchQuery = intent.getStringExtra(SearchManager.QUERY);
