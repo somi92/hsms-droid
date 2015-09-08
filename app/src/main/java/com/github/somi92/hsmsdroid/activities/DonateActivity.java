@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.somi92.hsmsdroid.R;
@@ -20,6 +21,9 @@ public class DonateActivity extends Activity {
     private TextView mRemark;
     private TextView mNumber;
     private TextView mPrice;
+
+    private Button mDonate;
+    private Button mShare;
 
     private HSMSEntity mEntity;
 
@@ -42,6 +46,14 @@ public class DonateActivity extends Activity {
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
+            }
+        });
+
+        mDonate = (Button) findViewById(R.id.donate_button);
+        mDonate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 
