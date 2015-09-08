@@ -22,6 +22,7 @@
             android:layout_height="50dip"
             android:text="1003"
             android:textSize="20dip"
+            android:textColor="#09AD0B"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 

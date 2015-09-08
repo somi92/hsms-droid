@@ -56,7 +56,7 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
         });
         mSwipeLayout.setColorSchemeResources(android.R.color.holo_red_dark,
                 android.R.color.holo_blue_dark,
-                android.R.color.black);
+                android.R.color.holo_green_dark);
 
         loadList();
         handleSearchIntent(getIntent());
@@ -139,7 +139,10 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
         mHSMSListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(MainActivity.this, "Broj: "+mCurrentEntities.get(i).getNumber(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Broj: "+mCurrentEntities.get(i).getNumber(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, DonateActivity.class);
+                intent.putExtra("entity", mCurrentEntities.get(i));
+                startActivity(intent);
             }
         });
     }

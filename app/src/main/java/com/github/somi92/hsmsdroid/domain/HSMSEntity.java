@@ -1,11 +1,14 @@
 package com.github.somi92.hsmsdroid.domain;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by milos on 9/1/15.
  */
-public class HSMSEntity {
+public class HSMSEntity implements Parcelable {
 
     @SerializedName("id")
     private String id;
@@ -29,6 +32,30 @@ public class HSMSEntity {
     public HSMSEntity() {
 
     }
+
+    protected HSMSEntity(Parcel in) {
+        id = in.readString();
+        desc = in.readString();
+        number = in.readString();
+        price = in.readString();
+        status = in.readString();
+        organisation = in.readString();
+        web = in.readString();
+        priority = in.readString();
+        remark = in.readString();
+    }
+
+    public static final Creator<HSMSEntity> CREATOR = new Creator<HSMSEntity>() {
+        @Override
+        public HSMSEntity createFromParcel(Parcel in) {
+            return new HSMSEntity(in);
+        }
+
+        @Override
+        public HSMSEntity[] newArray(int size) {
+            return new HSMSEntity[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -114,5 +141,23 @@ public class HSMSEntity {
         clone.setPriority(this.getPriority());
         clone.setRemark(this.getRemark());
         return clone;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(desc);
+        parcel.writeString(number);
+        parcel.writeString(price);
+        parcel.writeString(status);
+        parcel.writeString(organisation);
+        parcel.writeString(web);
+        parcel.writeString(priority);
+        parcel.writeString(remark);
     }
 }

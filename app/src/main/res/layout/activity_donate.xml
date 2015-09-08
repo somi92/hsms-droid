@@ -12,59 +12,101 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Humanitarna akcija za pomoc u lecenju Vuka Lojkovica"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
+        android:id="@+id/hsms_title"
+        android:textStyle="bold"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="35dp"
+        android:text="6133"
+        android:id="@+id/hsms_num"
+        android:textStyle="bold"
+        android:textColor="#09ad0b"
+        android:layout_above="@+id/share_button"
+        android:layout_alignLeft="@+id/share_button"
+        android:layout_alignStart="@+id/share_button" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="35dp"
+        android:text="100 din"
+        android:id="@+id/hsms_price"
+        android:textColor="#ff5c33"
+        android:layout_above="@+id/donate_button"
+        android:layout_alignRight="@+id/donate_button"
+        android:layout_alignEnd="@+id/donate_button"
+        android:textStyle="bold" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Doniraj"
+        android:id="@+id/donate_button"
+        android:layout_below="@+id/hsms_num"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textStyle="bold" />
+        android:width="100dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Podeli"
+        android:id="@+id/share_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:width="100dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Humanitarna organizacija &quot;Dečje srce&quot;"
-        android:id="@+id/textView2"
-        android:textStyle="italic"
-        android:textColor="#343434"
-        android:layout_above="@+id/textView3"
-        android:layout_toRightOf="@+id/textView4"
-        android:layout_toEndOf="@+id/textView4"
-        android:layout_marginBottom="35dp" />
+        android:id="@+id/hsms_org"
+        android:layout_below="@+id/hsms_title"
+        android:layout_alignRight="@+id/hsms_price"
+        android:layout_alignEnd="@+id/hsms_price"
+        android:layout_marginTop="26dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="http://decjesrce.rs/"
-        android:id="@+id/textView3"
-        android:textColor="#10bcc9"
-        android:layout_marginBottom="127dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/textView2"
-        android:layout_alignEnd="@+id/textView2" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="50dp"
-        android:text="6133"
-        android:id="@+id/textView4"
-        android:layout_marginTop="33dp"
-        android:layout_below="@+id/textView"
+        android:id="@+id/hsms_website"
+        android:layout_below="@+id/hsms_org"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textStyle="bold"
-        android:textColor="#00641f" />
+        android:textColor="#10bcc9"
+        android:textStyle="bold" />
 
-    <TextView
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="50dp"
-        android:text="100 din"
-        android:id="@+id/textView5"
-        android:textColor="#ff5c33"
-        android:layout_alignTop="@+id/textView4"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/hsms_website"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_above="@+id/hsms_num"
+        android:layout_alignRight="@+id/hsms_price"
+        android:layout_alignEnd="@+id/hsms_price" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+            android:id="@+id/hsms_remark"
+            android:freezesText="true"/>
+    </ScrollView>
 
 </RelativeLayout>
