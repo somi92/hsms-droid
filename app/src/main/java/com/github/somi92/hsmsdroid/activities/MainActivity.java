@@ -99,6 +99,9 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
                 onSearchRequested();
             }
         }
+        if(id == R.id.action_refresh) {
+            loadList();
+        }
 
         return super.onOptionsItemSelected(item);
     }
