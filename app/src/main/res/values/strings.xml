@@ -18,6 +18,7 @@
     <string name="service_ip_title">Adresa servisa</string>
     <string name="service_ip_default">192.168.1.2</string>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_donate">DonateActivity</string>
 
 
 </resources>
