@@ -174,10 +174,10 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
 
         for(HSMSEntity entity : mCurrentEntities) {
             String regex = "(?i)" + searchQuery;
-            entity.setDesc(entity.getDesc().replaceAll(regex, highlight(regex, entity.getDesc())));
-            entity.setOrganisation(entity.getOrganisation().replaceAll(regex, highlight(regex, entity.getOrganisation())));
-            entity.setWeb(entity.getWeb().replaceAll(regex, highlight(regex, entity.getWeb())));
-            entity.setNumber(entity.getNumber().replaceAll(regex, highlight(regex, entity.getNumber())));
+            entity.setDesc(highlight(regex, entity.getDesc()));
+            entity.setOrganisation(highlight(regex, entity.getOrganisation()));
+            entity.setWeb(highlight(regex, entity.getWeb()));
+            entity.setNumber(highlight(regex, entity.getNumber()));
         }
         Toast.makeText(this, "Broj pronađenih humanitarnih akcija: "+ mCurrentEntities.size(), Toast.LENGTH_SHORT).show();
         setEntitiesList(mCurrentEntities);
@@ -203,7 +203,8 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
         String result = "";
         while(matcher.find()) {
             result = matcher.group();
+            text = text.replace(result, "<font color='#E6E600'>"+result+"</font>");
         }
-        return "<font color='#E6E600'>"+result+"</font>";
+        return text;
     }
 }
