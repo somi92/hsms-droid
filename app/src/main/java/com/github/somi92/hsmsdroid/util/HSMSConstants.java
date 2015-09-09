@@ -20,4 +20,9 @@ public class HSMSConstants {
      */
     public static final String ACTION_SMS_DELIVERED = "SMS_DELIVERED";
     public static final String ACTION_SMS_SENT = "SMS_SENT";
+
+    /**
+     * Misc
+     */
+    public static final String VALID_EMAIL_REGEX = "^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
 }
