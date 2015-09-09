@@ -1,9 +1,15 @@
 package com.github.somi92.hsmsdroid.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +20,12 @@ import android.widget.Toast;
 import com.github.somi92.hsmsdroid.R;
 import com.github.somi92.hsmsdroid.domain.HSMSEntity;
 
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.ACTION_SMS_DELIVERED;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.ACTION_SMS_SENT;
+
 public class DonateActivity extends Activity {
+
+    private static final String TAG = DonateActivity.class.getSimpleName().toString();
 
     private TextView mTitle;
     private TextView mOrg;
@@ -29,6 +40,20 @@ public class DonateActivity extends Activity {
     private HSMSEntity mEntity;
 
     private String mShareMessageTemplate;
+
+    private DialogInterface.OnClickListener dialogListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            switch (i) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    sendSmsDonation();
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE:
+                    //
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +81,11 @@ public class DonateActivity extends Activity {
         mDonate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                AlertDialog.Builder dialog = new AlertDialog.Builder(DonateActivity.this);
+                dialog.setTitle("Jesti li sigurni?").setMessage("Da li ste sigurni da želite " +
+                        "da pošaljete SMS poruku na broj "+mEntity.getNumber()+"? Ova akcija će Vam biti naplaćena u iznosu od " +
+                        mEntity.getPrice()+".").setPositiveButton("Da", dialogListener)
+                .setNegativeButton("Ne", dialogListener).show();
             }
         });
 
@@ -81,6 +110,22 @@ public class DonateActivity extends Activity {
         Bundle bundle = getIntent().getExtras();
         mEntity = bundle.getParcelable("entity");
         setData();
+    }
+
+    private void sendSmsDonation() {
+
+        SmsManager smsManager = SmsManager.getDefault();
+        // fix intents !!!
+        try {
+            PendingIntent sentIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_SENT), 0);
+            PendingIntent deliverIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_DELIVERED), 0);
+            smsManager.sendTextMessage(mEntity.getNumber(), null, " ", sentIntent, deliverIntent);
+
+        } catch (Exception e) {
+            Toast.makeText(this, "Greška. SMS ne može biti poslat.", Toast.LENGTH_LONG).show();
+            Log.d(TAG, "sendSmsDonation error: "+e.getMessage());
+        }
+
     }
 
     private void setData() {
