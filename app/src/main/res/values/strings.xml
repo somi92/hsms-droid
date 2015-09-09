@@ -17,6 +17,16 @@
     <string name="service_ip_key">service_ip_pref</string>
     <string name="service_ip_title">Adresa servisa</string>
     <string name="service_ip_default">192.168.1.2</string>
+
+    <string name="user_settings_screen_key">user_settings_pref</string>
+    <string name="user_settings_screen_title">Korisničke informacije</string>
+    <string name="user_data_enabled_key">user_data_enabled_pref</string>
+    <string name="user_data_enabled_title">Šalji korisničke podatke</string>
+    <string name="user_email_key">user_email_pref</string>
+    <string name="user_email_title">E-mail korisnika</string>
+    <string name="user_name_key">user_name_pref</string>
+    <string name="user_name_title">Ime i prezime</string>
+
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_donate">DonateActivity</string>
 
@@ -26,6 +36,12 @@
     </string>
     <string name="share_chooser_title">
         Podeli putem aplikacije...
+    </string>
+
+    <string name="user_email_notification">
+        Vaši podaci se vezuju za svaku vašu donaciju putem aplikacije i neće biti prosleđeni trećim licima niti
+        reklamnim kompanijama. E-mail adresa će se koristiti isključivo za slanje informacija o humanitarnim akcijama
+        i događajima, kao i zahvalnica za top donatore. Ukoliko želite anonimno da donirate isključite ovu opciju.
     </string>
 
 </resources>

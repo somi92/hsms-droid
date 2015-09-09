@@ -11,6 +11,9 @@ public class HSMSConstants {
      * Preferences keys
      */
     public static final String SERVICE_IP_PREF = "service_ip_pref";
+    public static final String USER_DATA_ENABLED_PREF = "user_data_enabled_pref";
+    public static final String USER_EMAIL_PREF = "user_email_pref";
+    public static final String USER_NAME_PREF = "user_name_pref";
 
     /**
      * Custom actions

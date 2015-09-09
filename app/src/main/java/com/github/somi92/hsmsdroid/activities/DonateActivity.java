@@ -115,7 +115,6 @@ public class DonateActivity extends Activity {
     private void sendSmsDonation() {
 
         SmsManager smsManager = SmsManager.getDefault();
-        // fix intents !!!
         try {
             PendingIntent sentIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_SENT), 0);
             PendingIntent deliverIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_DELIVERED), 0);

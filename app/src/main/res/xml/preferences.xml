@@ -13,4 +13,28 @@
 
     </PreferenceScreen>
 
+    <PreferenceScreen
+        android:key="@string/user_settings_screen_key"
+        android:title="@string/user_settings_screen_title"
+        android:persistent="false">
+
+        <SwitchPreference
+            android:key="@string/user_data_enabled_key"
+            android:title="@string/user_data_enabled_title"
+            android:defaultValue="false" />
+
+        <EditTextPreference
+            android:key="@string/user_email_key"
+            android:title="@string/user_email_title"
+            android:dependency="@string/user_data_enabled_key"
+            android:defaultValue="" />
+
+        <EditTextPreference
+            android:key="@string/user_name_key"
+            android:title="@string/user_name_title"
+            android:dependency="@string/user_data_enabled_key"
+            android:defaultValue="" />
+
+    </PreferenceScreen>
+
 </PreferenceScreen>
