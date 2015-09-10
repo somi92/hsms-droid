@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.github.somi92.hsmsdroid.R;
 import com.github.somi92.hsmsdroid.tasks.HSMSRegisterTask;
@@ -17,7 +16,6 @@ import static com.github.somi92.hsmsdroid.util.HSMSConstants.SERVICE_IP_PREF;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.USER_DATA_ENABLED_PREF;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.USER_EMAIL_PREF;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.USER_NAME_PREF;
-import static com.github.somi92.hsmsdroid.util.HSMSConstants.VALID_EMAIL_REGEX;
 
 /**
  * Created by milos on 9/6/15.

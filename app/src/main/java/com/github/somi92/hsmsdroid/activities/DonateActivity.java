@@ -5,8 +5,8 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -19,13 +19,22 @@ import android.widget.Toast;
 
 import com.github.somi92.hsmsdroid.R;
 import com.github.somi92.hsmsdroid.domain.HSMSEntity;
+import com.github.somi92.hsmsdroid.tasks.HSMSDonateTask;
 
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.ACTION_SMS_DELIVERED;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.ACTION_SMS_SENT;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.PREF_FILE;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.SERVICE_IP_PREF;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.USER_DATA_ENABLED_PREF;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.USER_EMAIL_PREF;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.USER_NAME_PREF;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.VALID_EMAIL_REGEX;
 
 public class DonateActivity extends Activity {
 
     private static final String TAG = DonateActivity.class.getSimpleName().toString();
+
+    private SharedPreferences mPrefs;
 
     private TextView mTitle;
     private TextView mOrg;
@@ -46,7 +55,19 @@ public class DonateActivity extends Activity {
         public void onClick(DialogInterface dialogInterface, int i) {
             switch (i) {
                 case DialogInterface.BUTTON_POSITIVE:
-                    sendSmsDonation();
+//                    sendSmsDonation();
+                    // prebaciti sve da se izvrsi nakom potvrde o dostavi
+
+//                    HSMSDonateTask hdt = new HSMSDonateTask(DonateActivity.this, getApplicationContext());
+//                    mPrefs = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
+//                    String url = mPrefs.getString(SERVICE_IP_PREF, "192.168.1.2");
+//                    String email = "";
+//                    boolean userData = mPrefs.getBoolean(USER_DATA_ENABLED_PREF, false);
+//                    if(userData) {
+//                        email = mPrefs.getString(USER_EMAIL_PREF, "");
+//                    }
+//                    String[] data = {url, email, mEntity.getId()};
+//                    hdt.execute(data);
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
                     //
@@ -81,10 +102,18 @@ public class DonateActivity extends Activity {
         mDonate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mPrefs = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
+                String email = mPrefs.getString(USER_EMAIL_PREF, "");
+                String name = mPrefs.getString(USER_NAME_PREF, "");
+                Boolean sendUserData = mPrefs.getBoolean(USER_DATA_ENABLED_PREF, false);
+                String userData = " Donacija je anonimna.";
+                if(sendUserData && email.matches(VALID_EMAIL_REGEX)) {
+                    userData = " Korisnički podaci: "+name+", "+email+".";
+                }
                 AlertDialog.Builder dialog = new AlertDialog.Builder(DonateActivity.this);
                 dialog.setTitle("Jesti li sigurni?").setMessage("Da li ste sigurni da želite " +
                         "da pošaljete SMS poruku na broj "+mEntity.getNumber()+"? Ova akcija će Vam biti naplaćena u iznosu od " +
-                        mEntity.getPrice()+".").setPositiveButton("Da", dialogListener)
+                        mEntity.getPrice()+"."+userData).setPositiveButton("Da", dialogListener)
                 .setNegativeButton("Ne", dialogListener).show();
             }
         });
@@ -172,4 +201,20 @@ public class DonateActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public static void registerDonation() {
+        /*
+        HSMSDonateTask hdt = new HSMSDonateTask(getApplicationContext());
+        SharedPreferences prefs = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
+        String url = prefs.getString(SERVICE_IP_PREF, "192.168.1.2");
+        String email = "";
+        boolean userData = prefs.getBoolean(USER_DATA_ENABLED_PREF, false);
+        if(userData) {
+            email = prefs.getString(USER_EMAIL_PREF, "");
+        }
+        String[] data = {url, email, mEntity.getId()};
+        hdt.execute(data);
+        */
+    }
+
 }

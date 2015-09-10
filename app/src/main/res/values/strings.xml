@@ -39,9 +39,11 @@
     </string>
 
     <string name="user_email_notification">
+        Podaci o svakoj donaciji se šalju servisu radi statističke obrade.
         Vaši podaci se vezuju za svaku donaciju koju realizujete putem aplikacije i neće biti prosleđeni trećim licima i
         kompanijama. E-mail adresa će se koristiti isključivo za slanje informacija o humanitarnim akcijama
-        i događajima, kao i zahvalnica za top donatore. Ukoliko želite anonimno da donirate isključite ovu opciju.
+        i događajima, kao i zahvalnica za top donatore. Isključite ovu opciju ukoliko želite da vaša donacija bude anonimna
+        (e-mail, ime i prezime neće biti deo statistike).
     </string>
 
 </resources>

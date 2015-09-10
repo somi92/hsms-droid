@@ -1,6 +1,7 @@
 package com.github.somi92.hsmsdroid.tasks;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -41,6 +42,10 @@ public class HSMSRegisterTask extends AsyncTask<String, Integer, Boolean> {
 
         if(!email.matches(VALID_EMAIL_REGEX)) {
             mResult = "Greška! E-mail nije validan.";
+            SharedPreferences prefs = mContext.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+            SharedPreferences.Editor prefsEditor = prefs.edit();
+            prefsEditor.putString(USER_EMAIL_PREF, "");
+            prefsEditor.commit();
             return false;
         }
 
