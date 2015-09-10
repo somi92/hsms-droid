@@ -50,7 +50,7 @@ public class SettingsActivity extends PreferenceActivity {
                             // ok
                         }
                     }).show();
-                } else {
+                } else if(s.equals(USER_EMAIL_PREF) || s.equals(USER_NAME_PREF)) {
                     HSMSRegisterTask hrt = new HSMSRegisterTask(getApplicationContext());
                     String url = mPrefs.getString(SERVICE_IP_PREF, "192.168.1.2");
                     String email = mPrefs.getString(USER_EMAIL_PREF, "");
