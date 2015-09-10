@@ -94,7 +94,7 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
         }
         if (id == R.id.search_dialog_button) {
             if(mSourceEntities == null || mSourceEntities.length == 0){
-                Toast.makeText(this, "Nema preuzetih humanitarnih akcija.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Nema preuzetih humanitarnih akcija.", Toast.LENGTH_LONG).show();
             } else {
                 onSearchRequested();
             }
@@ -120,7 +120,7 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
     @Override
     public void onHSMSListReceived(HSMSEntity[] entities) {
         if(entities == null || entities.length<1) {
-            Toast.makeText(this, "Nije pronađena nijedna humanitarna akcija.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Nije pronađena nijedna humanitarna akcija.", Toast.LENGTH_LONG).show();
             return;
         }
         mSourceEntities = entities;
@@ -134,7 +134,7 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
         if(mSwipeLayout != null && mSwipeLayout.isRefreshing()) {
             mSwipeLayout.setRefreshing(false);
         }
-        Toast.makeText(this, "Broj preuzetih humanitarnih akcija: "+entitiesList.size(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Broj preuzetih humanitarnih akcija: "+entitiesList.size(), Toast.LENGTH_LONG).show();
 
         mHSMSListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -154,7 +154,7 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
 
     @Override
     public void onHSMSEventNotification(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         if(mSwipeLayout != null && mSwipeLayout.isRefreshing()) {
             mSwipeLayout.setRefreshing(false);
         }
@@ -185,7 +185,7 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
             entity.setWeb(highlight(regex, entity.getWeb()));
             entity.setNumber(highlight(regex, entity.getNumber()));
         }
-        Toast.makeText(this, "Broj pronađenih humanitarnih akcija: "+ mCurrentEntities.size(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Broj pronađenih humanitarnih akcija: "+ mCurrentEntities.size(), Toast.LENGTH_LONG).show();
         setEntitiesList(mCurrentEntities);
     }
 

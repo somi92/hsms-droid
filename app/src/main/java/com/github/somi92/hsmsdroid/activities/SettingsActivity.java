@@ -17,6 +17,7 @@ import static com.github.somi92.hsmsdroid.util.HSMSConstants.SERVICE_IP_PREF;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.USER_DATA_ENABLED_PREF;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.USER_EMAIL_PREF;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.USER_NAME_PREF;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.VALID_EMAIL_REGEX;
 
 /**
  * Created by milos on 9/6/15.
@@ -49,18 +50,20 @@ public class SettingsActivity extends PreferenceActivity {
                             // ok
                         }
                     }).show();
-                }
-                if(s.equals(USER_EMAIL_PREF)) {
-//                    Toast.makeText(SettingsActivity.this, "Promjenjena email adresa", Toast.LENGTH_SHORT).show();
+                } else {
                     HSMSRegisterTask hrt = new HSMSRegisterTask(getApplicationContext());
                     String url = mPrefs.getString(SERVICE_IP_PREF, "192.168.1.2");
                     String email = mPrefs.getString(USER_EMAIL_PREF, "");
                     String name = mPrefs.getString(USER_NAME_PREF, "");
-                    String[] data = {url, email, name};
+                    String method = "";
+                    if(s.equals(USER_EMAIL_PREF)) {
+                        method = "registerDonator";
+                    }
+                    if(s.equals(USER_NAME_PREF)) {
+                        method = "updatedonator";
+                    }
+                    String[] data = {url, email, name, method};
                     hrt.execute(data);
-                }
-                if(s.equals(USER_NAME_PREF)) {
-                    Toast.makeText(SettingsActivity.this, "Promjenjeno ime i prezime", Toast.LENGTH_SHORT).show();
                 }
             }
         };

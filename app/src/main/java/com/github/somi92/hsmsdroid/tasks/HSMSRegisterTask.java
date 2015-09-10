@@ -26,6 +26,7 @@ public class HSMSRegisterTask extends AsyncTask<String, Integer, Boolean> {
 
     private Context mContext;
     private String mResult;
+    private String mMethod;
 
     public HSMSRegisterTask(Context context) {
         mContext = context;
@@ -33,8 +34,8 @@ public class HSMSRegisterTask extends AsyncTask<String, Integer, Boolean> {
 
     @Override
     protected Boolean doInBackground(String... data) {
-
-        String targetUrl = "http://"+data[0]+"/HSMS-MS/public/service/registerDonator";
+        String mMethod = data[3];
+        String targetUrl = "http://"+data[0]+"/HSMS-MS/public/service/"+mMethod;
         String email = data[1];
         String name = data[2];
 
@@ -95,11 +96,15 @@ public class HSMSRegisterTask extends AsyncTask<String, Integer, Boolean> {
     @Override
     protected void onPostExecute(Boolean isSuccessful) {
         if(isSuccessful) {
-            if(mResult.contains("Error")) {
+
+            if(mResult.contains("Error") && mMethod.equals("registerDonator")) {
                 Toast.makeText(mContext, "Greška! E-mail već postoji u bazi ili je neispravan. Pokušajte ponovo.", Toast.LENGTH_LONG).show();
+            } else if(mResult.contains("Error") && mMethod.equals("updatedonator")) {
+                Toast.makeText(mContext, "Greška! E-mail ne postoji u bazi. Ponovo unesite e-mail.", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(mContext, "Uspešno ste registrovani.", Toast.LENGTH_LONG).show();
             }
+
         } else {
             Toast.makeText(mContext, mResult+" Pokušajte ponovo.", Toast.LENGTH_LONG).show();
         }
