@@ -11,6 +11,7 @@ import com.github.somi92.hsmsdroid.domain.HSMSStatsEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.somi92.hsmsdroid.database.HSMSStatsDBContract.HSMSStatsTable.COLUMN_NAME_NUM_DONATIONS;
 import static com.github.somi92.hsmsdroid.database.HSMSStatsDBContract.HSMSStatsTable.TABLE_NAME;
 
 /**
@@ -26,7 +27,7 @@ public class HSMSStatsGetAll extends HSMSStatsOperation {
     public HSMSDBResult executeHSMSStatsOperations() {
         mDatabase = mDBHelper.getReadableDatabase();
         List<HSMSStatsEntity> statsList = new ArrayList<>();
-        String query = "SELECT * FROM " + TABLE_NAME;
+        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + COLUMN_NAME_NUM_DONATIONS + " DESC";
         Cursor cursor = mDatabase.rawQuery(query, null);
         if(cursor.moveToFirst()) {
             do {
