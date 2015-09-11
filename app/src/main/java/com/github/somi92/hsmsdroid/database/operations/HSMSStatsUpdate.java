@@ -2,6 +2,7 @@ package com.github.somi92.hsmsdroid.database.operations;
 
 import android.database.Cursor;
 
+import com.github.somi92.hsmsdroid.database.HSMSDBResult;
 import com.github.somi92.hsmsdroid.database.HSMSStatsDBHelper;
 import com.github.somi92.hsmsdroid.domain.HSMSEntity;
 import com.github.somi92.hsmsdroid.domain.HSMSStatsEntity;
@@ -25,33 +26,34 @@ public class HSMSStatsUpdate extends HSMSStatsOperation {
     }
 
     @Override
-    public Boolean executeHSMSStatsOperations() {
+    public HSMSDBResult executeHSMSStatsOperations() {
         mDatabase = mDBHelper.getWritableDatabase();
 
         HSMSStatsEntity statsEntity = loadEntity();
+        long result;
         if(statsEntity != null) {
-            updateEntity(statsEntity);
+            result = updateEntity(statsEntity);
         } else {
-            insertEntity();
+            result = insertEntity();
         }
 
         mDatabase.close();
-        return true;
+        return new HSMSDBResult(result);
     }
 
-    private void insertEntity() {
+    private long insertEntity() {
         mContentValues.put(COLUMN_NAME_ACTION_ID, mEntity.getId());
         mContentValues.put(COLUMN_NAME_ACTION_DESC, mEntity.getDesc());
         mContentValues.put(COLUMN_NAME_ACTION_PRICE, mEntity.getPrice());
         mContentValues.put(COLUMN_NAME_NUM_DONATIONS, 1);
-        mDatabase.insert(TABLE_NAME, null, mContentValues);
+        return mDatabase.insert(TABLE_NAME, null, mContentValues);
     }
 
-    private void updateEntity(HSMSStatsEntity statsEntity) {
+    private long updateEntity(HSMSStatsEntity statsEntity) {
         mContentValues.put(COLUMN_NAME_ACTION_DESC, mEntity.getDesc());
         mContentValues.put(COLUMN_NAME_ACTION_PRICE, mEntity.getPrice());
-        mContentValues.put(COLUMN_NAME_NUM_DONATIONS, statsEntity.getNumberOfDonations()+1);
-        mDatabase.update(TABLE_NAME, mContentValues, COLUMN_NAME_ACTION_ID + "=?",
+        mContentValues.put(COLUMN_NAME_NUM_DONATIONS, statsEntity.getNumberOfDonations() + 1);
+        return mDatabase.update(TABLE_NAME, mContentValues, COLUMN_NAME_ACTION_ID + "=?",
                 new String[] {statsEntity.getActionId()});
     }
 

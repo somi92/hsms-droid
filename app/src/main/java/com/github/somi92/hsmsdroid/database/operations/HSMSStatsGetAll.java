@@ -23,7 +23,7 @@ public class HSMSStatsGetAll extends HSMSStatsOperation {
     }
 
     @Override
-    public List<HSMSStatsEntity> executeHSMSStatsOperations() {
+    public HSMSDBResult executeHSMSStatsOperations() {
         mDatabase = mDBHelper.getReadableDatabase();
         List<HSMSStatsEntity> statsList = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_NAME;
@@ -31,14 +31,14 @@ public class HSMSStatsGetAll extends HSMSStatsOperation {
         if(cursor.moveToFirst()) {
             do {
                 HSMSStatsEntity e = new HSMSStatsEntity();
-                e.setActionId(cursor.getString(0));
-                e.setActionDesc(cursor.getString(1));
-                e.setActionPrice(cursor.getString(2));
-                e.setNumberOfDonations(cursor.getInt(3));
+                e.setActionId(cursor.getString(1));
+                e.setActionDesc(cursor.getString(2));
+                e.setActionPrice(cursor.getString(3));
+                e.setNumberOfDonations(cursor.getInt(4));
                 statsList.add(e);
             } while(cursor.moveToNext());
         }
         mDatabase.close();
-        return statsList;
+        return new HSMSDBResult<>(statsList);
     }
 }

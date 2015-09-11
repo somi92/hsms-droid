@@ -3,12 +3,13 @@ package com.github.somi92.hsmsdroid.database.operations;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.github.somi92.hsmsdroid.database.HSMSDBResult;
 import com.github.somi92.hsmsdroid.database.HSMSStatsDBHelper;
 
 /**
  * Created by milos on 9/11/15.
  */
-public abstract class HSMSStatsOperation<T> {
+public abstract class HSMSStatsOperation {
 
     protected HSMSStatsDBHelper mDBHelper;
     protected ContentValues mContentValues;
@@ -19,5 +20,5 @@ public abstract class HSMSStatsOperation<T> {
         mContentValues = new ContentValues();
     }
 
-    public abstract T executeHSMSStatsOperations();
+    public abstract HSMSDBResult executeHSMSStatsOperations();
 }

@@ -10,8 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -142,10 +140,15 @@ public class DonateActivity extends Activity {
             String[] data = {url, email, mEntity.getId()};
             HSMSDonationRegistrator.getInstance().setContext(getApplicationContext());
             HSMSDonationRegistrator.getInstance().setData(data);
+            HSMSDonationRegistrator.getInstance().setEntity(mEntity);
 
-            PendingIntent sentPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_SENT), 0);
-            PendingIntent deliverPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_DELIVERED), 0);
-            smsManager.sendTextMessage(mEntity.getNumber(), null, " ", sentPendingIntent, deliverPendingIntent);
+            // rucno se testira poziv za registraciju statistike, ovo se kasnije prebacuje u receiver za dostavu
+            HSMSDonationRegistrator.getInstance().saveInternalStatistics();
+
+            // zbog testiranja
+//            PendingIntent sentPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_SENT), 0);
+//            PendingIntent deliverPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_DELIVERED), 0);
+//            smsManager.sendTextMessage(mEntity.getNumber(), null, " ", sentPendingIntent, deliverPendingIntent);
 
         } catch (Exception e) {
             Toast.makeText(this, "Greška. SMS ne može biti poslat.", Toast.LENGTH_LONG).show();
@@ -177,27 +180,5 @@ public class DonateActivity extends Activity {
 
         mEntity = savedInstanceState.getParcelable("entity");
         setData();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_donate, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

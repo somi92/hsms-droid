@@ -26,7 +26,7 @@ public final class HSMSStatsDBContract {
                 COLUMN_NAME_ACTION_ID + TEXT_TYPE + COMMA_SEP +
                 COLUMN_NAME_ACTION_DESC + TEXT_TYPE + COMMA_SEP +
                 COLUMN_NAME_ACTION_PRICE + TEXT_TYPE + COMMA_SEP +
-                COLUMN_NAME_NUM_DONATIONS + BIGINT_TYPE + COMMA_SEP + " )";
+                COLUMN_NAME_NUM_DONATIONS + BIGINT_TYPE + " )";
 
         public static final String DROP_HSMSSTATS_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }

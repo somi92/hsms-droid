@@ -102,6 +102,9 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
         if(id == R.id.action_refresh) {
             loadList();
         }
+        if(id == R.id.stats_button) {
+            startActivity(new Intent(this, StatsActivity.class));
+        }
 
         return super.onOptionsItemSelected(item);
     }
