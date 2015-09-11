@@ -3,10 +3,7 @@ package com.github.somi92.hsmsdroid.tasks;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
-
-import com.github.somi92.hsmsdroid.util.HSMSConstants;
 
 import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
@@ -18,7 +15,9 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Scanner;
 
-import static com.github.somi92.hsmsdroid.util.HSMSConstants.*;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.PREF_FILE;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.USER_EMAIL_PREF;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.VALID_EMAIL_REGEX;
 
 /**
  * Created by milos on 9/9/15.

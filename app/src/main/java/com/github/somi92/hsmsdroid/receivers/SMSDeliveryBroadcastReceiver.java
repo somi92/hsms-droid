@@ -4,13 +4,10 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.widget.Toast;
 
-import com.github.somi92.hsmsdroid.activities.DonateActivity;
-import com.github.somi92.hsmsdroid.tasks.HSMSDonateTask;
-
-import static com.github.somi92.hsmsdroid.util.HSMSConstants.*;
+import com.github.somi92.hsmsdroid.util.HSMSDonationRegistrator;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.ACTION_SMS_DELIVERED;
 
 /**
  * Created by milos on 9/9/15.
@@ -26,7 +23,7 @@ public class SMSDeliveryBroadcastReceiver extends BroadcastReceiver {
 
             if(getResultCode() == Activity.RESULT_OK) {
                 Toast.makeText(context, "SMS je uspešno dostavljen. Hvala Vam na humanosti.", Toast.LENGTH_LONG).show();
-                DonateActivity.registerDonation();
+                HSMSDonationRegistrator.getInstance().registerDonation();
             } else {
                 Toast.makeText(context, "Greška. SMS nije dostavljen.", Toast.LENGTH_LONG).show();
             }

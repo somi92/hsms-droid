@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.github.somi92.hsmsdroid.R;
 import com.github.somi92.hsmsdroid.domain.HSMSEntity;
-import com.github.somi92.hsmsdroid.tasks.HSMSDonateTask;
+import com.github.somi92.hsmsdroid.util.HSMSDonationRegistrator;
 
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.ACTION_SMS_DELIVERED;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.ACTION_SMS_SENT;
@@ -55,19 +55,7 @@ public class DonateActivity extends Activity {
         public void onClick(DialogInterface dialogInterface, int i) {
             switch (i) {
                 case DialogInterface.BUTTON_POSITIVE:
-//                    sendSmsDonation();
-                    // prebaciti sve da se izvrsi nakom potvrde o dostavi
-
-//                    HSMSDonateTask hdt = new HSMSDonateTask(DonateActivity.this, getApplicationContext());
-//                    mPrefs = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
-//                    String url = mPrefs.getString(SERVICE_IP_PREF, "192.168.1.2");
-//                    String email = "";
-//                    boolean userData = mPrefs.getBoolean(USER_DATA_ENABLED_PREF, false);
-//                    if(userData) {
-//                        email = mPrefs.getString(USER_EMAIL_PREF, "");
-//                    }
-//                    String[] data = {url, email, mEntity.getId()};
-//                    hdt.execute(data);
+                    sendSmsDonation();
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
                     //
@@ -127,7 +115,6 @@ public class DonateActivity extends Activity {
                         .replaceAll("!price!", mEntity.getPrice())
                         .replace("!desc!", mEntity.getDesc())
                         .replaceAll("!web!", mEntity.getWeb());
-//                Toast.makeText(DonateActivity.this, message, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_TEXT, message);
@@ -145,13 +132,25 @@ public class DonateActivity extends Activity {
 
         SmsManager smsManager = SmsManager.getDefault();
         try {
-            PendingIntent sentIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_SENT), 0);
-            PendingIntent deliverIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_DELIVERED), 0);
-            smsManager.sendTextMessage(mEntity.getNumber(), null, " ", sentIntent, deliverIntent);
+            SharedPreferences prefs = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
+            String url = prefs.getString(SERVICE_IP_PREF, "192.168.1.2");
+            String email = "";
+            boolean userData = prefs.getBoolean(USER_DATA_ENABLED_PREF, false);
+            if(userData) {
+                email = prefs.getString(USER_EMAIL_PREF, "");
+            }
+            String[] data = {url, email, mEntity.getId()};
+            HSMSDonationRegistrator.getInstance().setContext(getApplicationContext());
+            HSMSDonationRegistrator.getInstance().setData(data);
+
+            PendingIntent sentPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_SENT), 0);
+            PendingIntent deliverPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_DELIVERED), 0);
+            smsManager.sendTextMessage(mEntity.getNumber(), null, " ", sentPendingIntent, deliverPendingIntent);
 
         } catch (Exception e) {
             Toast.makeText(this, "Greška. SMS ne može biti poslat.", Toast.LENGTH_LONG).show();
             Log.d(TAG, "sendSmsDonation error: "+e.getMessage());
+            e.printStackTrace();
         }
 
     }
@@ -201,20 +200,4 @@ public class DonateActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    public static void registerDonation() {
-        /*
-        HSMSDonateTask hdt = new HSMSDonateTask(getApplicationContext());
-        SharedPreferences prefs = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
-        String url = prefs.getString(SERVICE_IP_PREF, "192.168.1.2");
-        String email = "";
-        boolean userData = prefs.getBoolean(USER_DATA_ENABLED_PREF, false);
-        if(userData) {
-            email = prefs.getString(USER_EMAIL_PREF, "");
-        }
-        String[] data = {url, email, mEntity.getId()};
-        hdt.execute(data);
-        */
-    }
-
 }
