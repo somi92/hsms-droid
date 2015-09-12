@@ -35,7 +35,8 @@ public class HSMSStatsGetAll extends HSMSStatsOperation {
                 e.setActionId(cursor.getString(1));
                 e.setActionDesc(cursor.getString(2));
                 e.setActionPrice(cursor.getString(3));
-                e.setNumberOfDonations(cursor.getInt(4));
+                e.setActionNumber(cursor.getString(4));
+                e.setNumberOfDonations(cursor.getInt(5));
                 statsList.add(e);
             } while(cursor.moveToNext());
         }

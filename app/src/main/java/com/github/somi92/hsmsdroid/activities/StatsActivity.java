@@ -28,7 +28,8 @@ public class StatsActivity extends Activity implements HSMSStatsDatabaseTask.HSM
     public void onHSMSStatsDataRead(List<HSMSStatsEntity> result) {
         if(result != null && result.size() > 0) {
             for(HSMSStatsEntity e : result) {
-                Toast.makeText(getApplicationContext(), e.getActionDesc()+" - "+e.getNumberOfDonations(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), e.getActionDesc()+" - "+e.getNumberOfDonations() + " - "
+                        + e.getActionPrice() + " - " + e.getActionNumber(), Toast.LENGTH_LONG).show();
             }
         } else {
             Toast.makeText(getApplicationContext(), "Statistika je prazna.", Toast.LENGTH_LONG).show();

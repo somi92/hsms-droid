@@ -8,14 +8,16 @@ public class HSMSStatsEntity {
     private String actionId;
     private String actionDesc;
     private String actionPrice;
+    private String actionNumber;
     private int numberOfDonations;
 
     public HSMSStatsEntity() {}
 
-    public HSMSStatsEntity(String actionDesc, String actionId, String actionPrice, int numberOfDonations) {
+    public HSMSStatsEntity(String actionDesc, String actionId, String actionPrice, String actionNumber, int numberOfDonations) {
         this.actionDesc = actionDesc;
         this.actionId = actionId;
         this.actionPrice = actionPrice;
+        this.actionNumber = actionNumber;
         this.numberOfDonations = numberOfDonations;
     }
 
@@ -41,6 +43,14 @@ public class HSMSStatsEntity {
 
     public void setActionPrice(String actionPrice) {
         this.actionPrice = actionPrice;
+    }
+
+    public String getActionNumber() {
+        return actionNumber;
+    }
+
+    public void setActionNumber(String actionNumber) {
+        this.actionNumber = actionNumber;
     }
 
     public int getNumberOfDonations() {
