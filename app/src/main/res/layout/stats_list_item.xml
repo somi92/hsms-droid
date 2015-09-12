@@ -6,10 +6,8 @@
     android:layout_marginRight="5dip"
     android:orientation="horizontal">
 
-    <!-- Number box -->
-
     <LinearLayout
-        android:id="@+id/thumbnail"
+        android:id="@+id/stats_thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -17,7 +15,7 @@
         android:padding="3dip" >
 
         <TextView
-            android:id="@+id/num_box"
+            android:id="@+id/stats_num_box"
             android:layout_width="50dip"
             android:layout_height="50dip"
             android:text="1003"
@@ -25,74 +23,56 @@
             android:textColor="#09AD0B"
             tools:ignore="HardcodedText" />
 
-        <!--<TextView-->
-            <!--android:id="@+id/num_messages"-->
-            <!--android:layout_width="50dip"-->
-            <!--android:layout_height="20dip"-->
-            <!--android:text="Poruka:"-->
-            <!--android:layout_below="@+id/num_box"-->
-            <!--android:textSize="15dip"-->
-            <!--android:textColor="#09AD0B"-->
-            <!--tools:ignore="HardcodedText" />-->
-
     </LinearLayout>
 
-    <!-- Description box -->
-
     <TextView
-        android:id="@+id/description"
+        android:id="@+id/stats_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/thumbnail"
-        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_alignTop="@+id/stats_thumbnail"
+        android:layout_toRightOf="@+id/stats_thumbnail"
         android:text="Pomoc za stanovnistvo pogodjeno poplavama u Republici Srbiji"
         android:textColor="#040404"
         android:textSize="15dip"
         android:textStyle="bold"
         android:typeface="sans" />
 
-    <!-- Organization box -->
-
     <TextView
-        android:id="@+id/organisation"
+        android:id="@+id/stats_messages"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/description"
+        android:layout_below="@id/stats_description"
         android:layout_marginRight="50dip"
         android:layout_marginTop="1dip"
-        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_toRightOf="@+id/stats_thumbnail"
         android:text="Poslato poruka: 1232"
         android:textColor="#10bcc9"
-        android:textSize="15dip"
+        android:textSize="14dip"
         android:textStyle="bold"/>
 
-    <!-- Price box -->
-
     <TextView
-        android:id="@+id/price"
+        android:id="@+id/stats_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/organisation"
+        android:layout_alignTop="@id/stats_messages"
         android:layout_marginRight="5dip"
         android:gravity="right"
-        android:text="Poruka: 1232"
+        android:text="100 din"
         android:textColor="#FF5C33"
-        android:textSize="10dip"
+        android:textSize="12dip"
         android:textStyle="bold" />
 
-    <!-- Website box -->
-
     <TextView
-        android:id="@+id/website"
+        android:id="@+id/stats_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/organisation"
-        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_below="@id/stats_messages"
+        android:layout_toRightOf="@+id/stats_thumbnail"
         android:gravity="left"
         android:text="Ukupan iznos: 10000 din"
         android:textColor="#10bcc9"
-        android:textSize="15dip"
+        android:textSize="14dip"
         android:textStyle="bold" />
 
 </RelativeLayout>
