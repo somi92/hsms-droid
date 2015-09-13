@@ -102,7 +102,7 @@ public class HSMSRegisterTask extends AsyncTask<String, Integer, Boolean> {
         if(isSuccessful) {
 
             if(mResult.contains("Error") && mMethod.equals("registerDonator")) {
-                Toast.makeText(mContext, "E-mail je već registrovan. Pokušajte ponovo.", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "E-mail je već registrovan.", Toast.LENGTH_LONG).show();
             } else if(mResult.contains("Error") && mMethod.equals("updatedonator")) {
                 Toast.makeText(mContext, "E-mail ne postoji u bazi. Ponovo unesite e-mail.", Toast.LENGTH_LONG).show();
             } else {

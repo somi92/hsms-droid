@@ -1,18 +1,23 @@
 package com.github.somi92.hsmsdroid.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -22,13 +27,21 @@ import com.github.somi92.hsmsdroid.domain.HSMSEntity;
 import com.github.somi92.hsmsdroid.tasks.HSMSListTask;
 import com.github.somi92.hsmsdroid.util.HSMSConstants;
 import com.github.somi92.hsmsdroid.util.HSMSListAdapter;
+import com.github.somi92.hsmsdroid.util.HSMSTaskExecutor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.APP_FIRST_RUN;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.DEFAULT_IP;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.PREF_FILE;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.SERVICE_IP_PREF;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.USER_DATA_ENABLED_PREF;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.USER_EMAIL_PREF;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.USER_NAME_PREF;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.VALID_EMAIL_REGEX;
 
 public class MainActivity extends Activity implements HSMSListTask.HSMSListEventListener {
 
@@ -47,6 +60,14 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
         PreferenceManager.setDefaultValues(this, PREF_FILE, MODE_PRIVATE, R.xml.preferences, false);
         mPrefs = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
 
+        boolean isFirstRun = mPrefs.getBoolean(APP_FIRST_RUN, true);
+        if(isFirstRun) {
+            SharedPreferences.Editor editor = mPrefs.edit();
+            editor.putBoolean(APP_FIRST_RUN, false);
+            editor.apply();
+            showFirstRunDialog();
+        }
+
         mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -60,6 +81,55 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
 
         loadList();
         handleSearchIntent(getIntent());
+    }
+
+    private void showFirstRunDialog() {
+
+        final AlertDialog.Builder firstRunDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        View view = getLayoutInflater().inflate(R.layout.first_run_dialog, null);
+        firstRunDialogBuilder.setView(view);
+
+        firstRunDialogBuilder.setCancelable(false);
+
+        final AlertDialog firstRunDialog = firstRunDialogBuilder.create();
+
+        final EditText userEmail = (EditText) view.findViewById(R.id.user_email_fr);
+        final EditText userName = (EditText) view.findViewById(R.id.user_name_fr);
+        final Button saveButton = (Button) view.findViewById(R.id.button_save_user_data);
+        final Button skipButton = (Button) view.findViewById(R.id.button_skip_user_data);
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPrefs = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
+                String url = mPrefs.getString(SERVICE_IP_PREF, DEFAULT_IP);
+                String email = userEmail.getText().toString();
+                String name = userName.getText().toString();
+                String method = "registerDonator";
+                if(email.matches(VALID_EMAIL_REGEX)) {
+                    SharedPreferences.Editor editor = mPrefs.edit();
+                    editor.putBoolean(USER_DATA_ENABLED_PREF, true);
+                    editor.putString(USER_EMAIL_PREF, email);
+                    editor.putString(USER_NAME_PREF, name);
+                    editor.apply();
+                    String[] data = {url, email, name, method};
+                    HSMSTaskExecutor.getInstance().setupUserRegistration(MainActivity.this, data);
+                    HSMSTaskExecutor.getInstance().registerUser(true);
+                    firstRunDialog.cancel();
+                } else {
+                    Toast.makeText(MainActivity.this, "Greška! E-mail nije validan. Pokušajte ponovo.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                firstRunDialog.cancel();
+            }
+        });
+
+        firstRunDialog.show();
     }
 
     @Override
@@ -169,7 +239,7 @@ public class MainActivity extends Activity implements HSMSListTask.HSMSListEvent
     }
 
     private void loadList() {
-        String serviceAddress = mPrefs.getString(HSMSConstants.SERVICE_IP_PREF, "192.168.1.2");
+        String serviceAddress = mPrefs.getString(HSMSConstants.SERVICE_IP_PREF, DEFAULT_IP);
         HSMSListTask hlt = new HSMSListTask(this);
         hlt.execute(serviceAddress);
     }

@@ -2,7 +2,6 @@ package com.github.somi92.hsmsdroid.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,10 +16,9 @@ import android.widget.Toast;
 
 import com.github.somi92.hsmsdroid.R;
 import com.github.somi92.hsmsdroid.domain.HSMSEntity;
-import com.github.somi92.hsmsdroid.util.HSMSDonationRegistrator;
+import com.github.somi92.hsmsdroid.util.HSMSTaskExecutor;
 
-import static com.github.somi92.hsmsdroid.util.HSMSConstants.ACTION_SMS_DELIVERED;
-import static com.github.somi92.hsmsdroid.util.HSMSConstants.ACTION_SMS_SENT;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.DEFAULT_IP;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.PREF_FILE;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.SERVICE_IP_PREF;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.USER_DATA_ENABLED_PREF;
@@ -130,20 +128,20 @@ public class DonateActivity extends Activity {
 
         SmsManager smsManager = SmsManager.getDefault();
         try {
-            SharedPreferences prefs = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
-            String url = prefs.getString(SERVICE_IP_PREF, "192.168.1.2");
+            mPrefs = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
+            String url = mPrefs.getString(SERVICE_IP_PREF, DEFAULT_IP);
             String email = "";
-            boolean userData = prefs.getBoolean(USER_DATA_ENABLED_PREF, false);
+            boolean userData = mPrefs.getBoolean(USER_DATA_ENABLED_PREF, false);
             if(userData) {
-                email = prefs.getString(USER_EMAIL_PREF, "");
+                email = mPrefs.getString(USER_EMAIL_PREF, "");
             }
             String[] data = {url, email, mEntity.getId()};
-            HSMSDonationRegistrator.getInstance().setContext(getApplicationContext());
-            HSMSDonationRegistrator.getInstance().setData(data);
-            HSMSDonationRegistrator.getInstance().setEntity(mEntity);
+            HSMSTaskExecutor.getInstance().setupDonationRegistration(this, data);
+            HSMSTaskExecutor.getInstance().setupStatistics(this, mEntity);
 
             // rucno se testira poziv za registraciju statistike, ovo se kasnije prebacuje u receiver za dostavu
-            HSMSDonationRegistrator.getInstance().saveInternalStatistics();
+            HSMSTaskExecutor.getInstance().registerDonation(false);
+            HSMSTaskExecutor.getInstance().saveInternalStatistics(true);
 
             // zbog testiranja
 //            PendingIntent sentPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_SENT), 0);

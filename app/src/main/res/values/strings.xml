@@ -19,7 +19,7 @@
     <string name="service_ip_default">192.168.0.103</string>
 
     <string name="user_settings_screen_key">user_settings_pref</string>
-    <string name="user_settings_screen_title">Korisničke informacije</string>
+    <string name="user_settings_screen_title">Korisnički podaci</string>
     <string name="user_data_enabled_key">user_data_enabled_pref</string>
     <string name="user_data_enabled_title">Šalji korisničke podatke</string>
     <string name="user_email_key">user_email_pref</string>
@@ -54,5 +54,17 @@
         \n
         \nPodaci o humanitarnim akcijama preuzimaju se sa veb stranica humanitarnih organizacija i mobilnih operatera u Srbiji.
     </string>
+
+    <string name="first_run_notification">
+        Podaci o svakoj donaciji se šalju servisu radi statističke obrade.
+        Vaši podaci se vezuju za svaku donaciju koju realizujete putem aplikacije i neće biti prosleđeni trećim licima i
+        kompanijama. E-mail adresa će se koristiti isključivo za slanje informacija o humanitarnim akcijama
+        i događajima, kao i zahvalnica za top donatore. Preskočite ovu opciju ukoliko želite da vaša donacija bude anonimna
+        (e-mail, ime i prezime neće biti deo statistike). Ovu opciju je moguće promeniti u bilo kom trenutku u okviru podešavanja
+        aplikacije.
+    </string>
+
+    <string name="user_data_save_button">Sačuvaj</string>
+    <string name="user_data_skip_button">Preskoči</string>
 
 </resources>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="20dp"
+    android:paddingTop="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp" >
+
+    <TextView
+        android:id="@+id/first_run_text"
+        android:text="@string/first_run_notification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp" />
+
+    <EditText
+        android:id="@+id/user_email_fr"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@id/first_run_text"
+        android:hint="E-mail" />
+
+    <EditText
+        android:id="@+id/user_name_fr"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_below="@id/user_email_fr"
+        android:hint="Ime i prezime" />
+
+    <Button
+        android:id="@+id/button_save_user_data"
+        android:text="@string/user_data_save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/user_name_fr" />
+
+    <Button
+        android:id="@+id/button_skip_user_data"
+        android:text="@string/user_data_skip_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/button_save_user_data"
+        android:layout_below="@id/user_name_fr" />
+
+</RelativeLayout>

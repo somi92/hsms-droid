@@ -14,6 +14,7 @@ public class HSMSConstants {
     public static final String USER_DATA_ENABLED_PREF = "user_data_enabled_pref";
     public static final String USER_EMAIL_PREF = "user_email_pref";
     public static final String USER_NAME_PREF = "user_name_pref";
+    public static final String APP_FIRST_RUN = "app_first_run";
 
     /**
      * Custom actions
@@ -25,4 +26,5 @@ public class HSMSConstants {
      * Misc
      */
     public static final String VALID_EMAIL_REGEX = "^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
+    public static final String DEFAULT_IP = "192.168.0.103";
 }

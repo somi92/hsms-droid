@@ -9,8 +9,9 @@ import android.preference.PreferenceFragment;
 import android.view.MenuItem;
 
 import com.github.somi92.hsmsdroid.R;
-import com.github.somi92.hsmsdroid.tasks.HSMSRegisterTask;
+import com.github.somi92.hsmsdroid.util.HSMSTaskExecutor;
 
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.DEFAULT_IP;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.PREF_FILE;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.SERVICE_IP_PREF;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.USER_DATA_ENABLED_PREF;
@@ -49,8 +50,7 @@ public class SettingsActivity extends PreferenceActivity {
                         }
                     }).show();
                 } else if(s.equals(USER_EMAIL_PREF) || s.equals(USER_NAME_PREF)) {
-                    HSMSRegisterTask hrt = new HSMSRegisterTask(getApplicationContext());
-                    String url = mPrefs.getString(SERVICE_IP_PREF, "192.168.1.2");
+                    String url = mPrefs.getString(SERVICE_IP_PREF, DEFAULT_IP);
                     String email = mPrefs.getString(USER_EMAIL_PREF, "");
                     String name = mPrefs.getString(USER_NAME_PREF, "");
                     String method = "";
@@ -61,7 +61,8 @@ public class SettingsActivity extends PreferenceActivity {
                         method = "updatedonator";
                     }
                     String[] data = {url, email, name, method};
-                    hrt.execute(data);
+                    HSMSTaskExecutor.getInstance().setupUserRegistration(SettingsActivity.this, data);
+                    HSMSTaskExecutor.getInstance().registerUser(true);
                 }
             }
         };
