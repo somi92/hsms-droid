@@ -7,7 +7,7 @@
     <string name="action_settings">Podešavanja</string>
     <string name="action_refresh">Osveži</string>
     <string name="search_dialog_button">Pretraga</string>
-    <string name="help_button">Pomoć</string>
+    <string name="about_button">O aplikaciji</string>
     <string name="stats_button">Statistika</string>
 
     <string name="settings_activity_label">Podešavanja</string>
@@ -27,9 +27,10 @@
     <string name="user_name_key">user_name_pref</string>
     <string name="user_name_title">Ime i prezime</string>
 
-    <string name="title_activity_search">SearchActivity</string>
-    <string name="title_activity_donate">DonateActivity</string>
-    <string name="title_activity_stats">StatsActivity</string>
+    <string name="title_activity_search">Pretraga</string>
+    <string name="title_activity_donate">Detalji</string>
+    <string name="title_activity_stats">Statistika vaših donacija</string>
+    <string name="title_activity_about">O aplikaciji</string>
 
     <string name="share_message_template">
         Pošalji SMS poruku na !number! i doniraj !price! u sklopu akcije: !desc!. Više informacija na !web!. Poslato pomoću aplikacije
@@ -46,6 +47,5 @@
         i događajima, kao i zahvalnica za top donatore. Isključite ovu opciju ukoliko želite da vaša donacija bude anonimna
         (e-mail, ime i prezime neće biti deo statistike).
     </string>
-    <string name="title_activity_about">AboutActivity</string>
 
 </resources>

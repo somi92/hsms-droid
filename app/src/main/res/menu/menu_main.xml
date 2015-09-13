@@ -26,8 +26,8 @@
 
         app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/help_button"
-        android:title="@string/help_button"
+    <item android:id="@+id/about_button"
+        android:title="@string/about_button"
         android:icon="@drawable/ic_help_outline_white_48dp"
 
         app:showAsAction="ifRoom" />
