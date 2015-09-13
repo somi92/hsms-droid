@@ -48,4 +48,11 @@
         (e-mail, ime i prezime neće biti deo statistike).
     </string>
 
+    <string name="about_text">
+        Humanitarni SMS je mobilna aplikacija za Android platformu koja omogućava korisnicima da u nekoliko dodira ekrana doniraju
+        sredstva putem SMS poruke.
+        \n
+        \nPodaci o humanitarnim akcijama preuzimaju se sa veb stranica humanitarnih organizacija i mobilnih operatera u Srbiji.
+    </string>
+
 </resources>
