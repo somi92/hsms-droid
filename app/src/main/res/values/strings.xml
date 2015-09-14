@@ -52,7 +52,10 @@
         Humanitarni SMS je mobilna aplikacija za Android platformu koja omogućava korisnicima da u nekoliko dodira ekrana doniraju
         sredstva putem SMS poruke.
         \n
-        \nPodaci o humanitarnim akcijama preuzimaju se sa veb stranica humanitarnih organizacija i mobilnih operatera u Srbiji.
+        \nPodaci o humanitarnim akcijama i SMS brojevima preuzimaju se sa veb stranica humanitarnih organizacija i mobilnih operatera
+        u Srbiji.
+        \n
+        \nAplikacija je projekat otvorenog koda pod MIT licencom. Izvorni kod dostupan je na adresi https://github.com/somi92/hsms-droid.
     </string>
 
     <string name="first_run_notification">
