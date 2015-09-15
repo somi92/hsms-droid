@@ -42,7 +42,7 @@ public class HSMSStatsListAdapter extends ArrayAdapter<HSMSStatsEntity> {
         priceBox.setText(hsmsStatsEntity.getActionPrice());
 
         String amount = (Integer.parseInt(hsmsStatsEntity.getActionPrice().split(" ")[0])
-                * hsmsStatsEntity.getNumberOfDonations()) + "din";
+                * hsmsStatsEntity.getNumberOfDonations()) + " rsd";
         amountBox.setText("Ukupan iznos: " + amount);
 
         return convertView;

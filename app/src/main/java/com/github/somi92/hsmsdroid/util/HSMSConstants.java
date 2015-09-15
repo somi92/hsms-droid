@@ -19,8 +19,8 @@ public class HSMSConstants {
     /**
      * Custom actions
      */
-    public static final String ACTION_SMS_DELIVERED = "SMS_DELIVERED";
-    public static final String ACTION_SMS_SENT = "SMS_SENT";
+    public static final String ACTION_SMS_DELIVERED = "HSMS_DELIVERED";
+    public static final String ACTION_SMS_SENT = "HSMS_SENT";
 
     /**
      * Misc

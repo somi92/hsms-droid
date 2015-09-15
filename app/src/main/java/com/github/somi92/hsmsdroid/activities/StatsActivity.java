@@ -60,7 +60,7 @@ public class StatsActivity extends Activity implements HSMSStatsDatabaseTask.HSM
             Toast.makeText(getApplicationContext(), "Statistika je prazna.", Toast.LENGTH_LONG).show();
         }
         mMessages.setText("Broj vaših SMS donacija: " + messages + "");
-        mAmount.setText("Iznos novca koji ste donirali: " + amount + " din");
+        mAmount.setText("Iznos novca koji ste donirali: " + amount + " rsd");
         if(mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
