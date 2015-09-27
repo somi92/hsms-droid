@@ -47,12 +47,12 @@
 
         <receiver android:name=".receivers.SMSDeliveryBroadcastReceiver" >
             <intent-filter>
-                <action android:name="SMS_DELIVERED" />
+                <action android:name="HSMS_DELIVERED" />
             </intent-filter>
         </receiver>
         <receiver android:name=".receivers.SMSSendBroadcastReceiver" >
             <intent-filter>
-                <action android:name="SMS_SENT" />
+                <action android:name="HSMS_SENT" />
             </intent-filter>
         </receiver>
 

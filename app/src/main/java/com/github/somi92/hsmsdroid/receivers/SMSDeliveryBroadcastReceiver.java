@@ -24,8 +24,8 @@ public class SMSDeliveryBroadcastReceiver extends BroadcastReceiver {
 
             if(getResultCode() == Activity.RESULT_OK) {
                 Toast.makeText(context, "SMS je uspešno dostavljen. Hvala Vam na humanosti.", Toast.LENGTH_LONG).show();
-//                HSMSTaskExecutor.getInstance().registerDonation(false);
-//                HSMSTaskExecutor.getInstance().saveInternalStatistics(true);
+                HSMSTaskExecutor.getInstance().registerDonation(false);
+                HSMSTaskExecutor.getInstance().saveInternalStatistics(true);
             } else {
                 Toast.makeText(context, "Greška. SMS nije dostavljen.", Toast.LENGTH_LONG).show();
             }

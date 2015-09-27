@@ -26,5 +26,5 @@ public class HSMSConstants {
      * Misc
      */
     public static final String VALID_EMAIL_REGEX = "^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
-    public static final String DEFAULT_IP = "192.168.0.103";
+    public static final String DEFAULT_IP = "192.168.1.181";
 }

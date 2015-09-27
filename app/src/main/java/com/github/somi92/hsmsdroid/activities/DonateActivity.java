@@ -2,6 +2,7 @@ package com.github.somi92.hsmsdroid.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +19,8 @@ import com.github.somi92.hsmsdroid.R;
 import com.github.somi92.hsmsdroid.domain.HSMSEntity;
 import com.github.somi92.hsmsdroid.util.HSMSTaskExecutor;
 
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.ACTION_SMS_DELIVERED;
+import static com.github.somi92.hsmsdroid.util.HSMSConstants.ACTION_SMS_SENT;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.DEFAULT_IP;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.PREF_FILE;
 import static com.github.somi92.hsmsdroid.util.HSMSConstants.SERVICE_IP_PREF;
@@ -139,14 +142,15 @@ public class DonateActivity extends Activity {
             HSMSTaskExecutor.getInstance().setupDonationRegistration(this, data);
             HSMSTaskExecutor.getInstance().setupStatistics(this, mEntity);
 
-            // rucno se testira poziv za registraciju statistike, ovo se kasnije prebacuje u receiver za dostavu
-            HSMSTaskExecutor.getInstance().registerDonation(false);
-            HSMSTaskExecutor.getInstance().saveInternalStatistics(true);
+            // testira se poziv za registraciju statistike, u production kodu se ovo brise i koristi se
+            // u delivery receiver-u
+            // HSMSTaskExecutor.getInstance().registerDonation(false);
+            // HSMSTaskExecutor.getInstance().saveInternalStatistics(true);
 
-            // zbog testiranja
-//            PendingIntent sentPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_SENT), 0);
-//            PendingIntent deliverPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_DELIVERED), 0);
-//            smsManager.sendTextMessage(mEntity.getNumber(), null, " ", sentPendingIntent, deliverPendingIntent);
+            // iskljuciti prilikom testiranja
+            PendingIntent sentPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_SENT), 0);
+            PendingIntent deliverPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_SMS_DELIVERED), 0);
+            smsManager.sendTextMessage(mEntity.getNumber(), null, " ", sentPendingIntent, deliverPendingIntent);
 
         } catch (Exception e) {
             Toast.makeText(this, "Greška. SMS ne može biti poslat.", Toast.LENGTH_LONG).show();
